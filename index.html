@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    <title>Buon Compleanno Joani!</title>
-    <!-- Bootstrap 5 CSS + Icons + Google Fonts (modern & clean) -->
+    <title>🎁 Buon Compleanno Joani! ✨</title>
+    <!-- Bootstrap 5 + Google Fonts + Anime.js + Canvas Confetti -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
     <style>
         * {
             margin: 0;
@@ -16,24 +17,16 @@
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Poppins', sans-serif;
             min-height: 100vh;
-            background: linear-gradient(145deg, #E8F7F2 0%, #D4EFE6 100%);
+            background: linear-gradient(135deg, #0a0f1a 0%, #0f1825 50%, #1a1f2e 100%);
             position: relative;
             overflow-x: hidden;
+            cursor: default;
         }
 
-        /* Tiffany primary color palette */
-        :root {
-            --tiffany: #81D8D0;
-            --tiffany-deep: #5BBFB5;
-            --tiffany-dark: #3A9E94;
-            --tiffany-soft: #B2E6E0;
-            --tiffany-mist: #CFF2EE;
-        }
-
-        /* Animazioni particelle fluttuanti (kawaii ma eleganti) */
-        .floating-particles {
+        /* Particelle stellari animate in background */
+        #stars-canvas {
             position: fixed;
             top: 0;
             left: 0;
@@ -41,207 +34,202 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
-            overflow: hidden;
         }
-        
-        .particle {
-            position: absolute;
-            font-size: 1.2rem;
-            opacity: 0.3;
-            animation: floatParticle 12s infinite ease-in-out;
-            user-select: none;
+
+        /* Effetto glow dinamico */
+        .glow-orb {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(90, 190, 175, 0.15), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: orbFloat 12s infinite ease-in-out;
         }
-        
-        @keyframes floatParticle {
-            0% { transform: translateY(0px) rotate(0deg) scale(1); opacity: 0.2; }
-            50% { transform: translateY(-35px) rotate(8deg) scale(1.1); opacity: 0.5; }
-            100% { transform: translateY(0px) rotate(0deg) scale(1); opacity: 0.2; }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+            50% { transform: translate(40px, -30px) scale(1.1); opacity: 0.6; }
         }
-        
-        .particle:nth-child(1) { top: 15%; left: 5%; animation-duration: 14s; font-size: 1.6rem; }
-        .particle:nth-child(2) { top: 25%; right: 8%; animation-duration: 11s; font-size: 1.4rem; animation-delay: -2s; }
-        .particle:nth-child(3) { bottom: 20%; left: 12%; animation-duration: 16s; font-size: 1.8rem; animation-delay: -4s; }
-        .particle:nth-child(4) { bottom: 30%; right: 15%; animation-duration: 13s; font-size: 1.3rem; }
-        .particle:nth-child(5) { top: 60%; left: 20%; animation-duration: 15s; font-size: 1.5rem; animation-delay: -1s; }
-        .particle:nth-child(6) { top: 80%; right: 22%; animation-duration: 12s; font-size: 1.7rem; }
-        .particle:nth-child(7) { top: 10%; left: 85%; animation-duration: 18s; font-size: 1.2rem; }
-        .particle:nth-child(8) { top: 45%; left: 45%; animation-duration: 20s; font-size: 1.4rem; }
-        
-        /* Card principale verde Tiffany elegante */
+
+        .orb1 { top: -200px; right: -200px; animation-duration: 15s; }
+        .orb2 { bottom: -250px; left: -150px; animation-duration: 18s; animation-delay: -5s; }
+
+        /* Card principale effetto vetro + 3D hover */
         .hero-card {
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(2px);
-            border-radius: 56px;
-            box-shadow: 0 30px 45px -15px rgba(58, 158, 148, 0.25), 0 2px 6px rgba(0,0,0,0.02);
-            border: 1px solid rgba(129, 216, 208, 0.5);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            padding: 2rem 1.8rem;
+            background: rgba(18, 25, 40, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 64px;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(90, 190, 175, 0.2);
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            padding: 2.5rem 2rem;
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
-        
+
         .hero-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 35px 50px -18px rgba(58, 158, 148, 0.35);
+            transform: translateY(-8px) rotateX(2deg);
+            box-shadow: 0 45px 65px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(90, 190, 175, 0.4);
         }
-        
+
         .main-title {
-            font-weight: 800;
-            font-size: 3.8rem;
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #2C7A6E, #489E92, #6DC9BF);
+            font-weight: 900;
+            font-size: 4.2rem;
+            background: linear-gradient(135deg, #E8F7F2, #81D8D0, #5BBFB5, #CFF2EE);
+            background-size: 300% auto;
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
+            animation: gradientShift 4s ease infinite, titlePulse 2s ease-in-out infinite alternate;
+            letter-spacing: -0.02em;
             margin-bottom: 0.5rem;
-            animation: titleGlow 2s ease-in-out infinite alternate;
         }
-        
-        @keyframes titleGlow {
-            0% { text-shadow: 0 0 0px rgba(90, 190, 175, 0.2); }
-            100% { text-shadow: 0 0 8px rgba(90, 190, 175, 0.4); }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        
+
+        @keyframes titlePulse {
+            0% { text-shadow: 0 0 0px rgba(90, 190, 175, 0); }
+            100% { text-shadow: 0 0 20px rgba(90, 190, 175, 0.5); }
+        }
+
         .birthday-badge {
-            background: var(--tiffany-mist);
-            color: #2C7A6E;
+            background: rgba(90, 190, 175, 0.2);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(90, 190, 175, 0.4);
+            color: #81D8D0;
             font-weight: 700;
-            padding: 0.5rem 1.6rem;
+            padding: 0.6rem 1.8rem;
             border-radius: 100px;
             font-size: 1rem;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            backdrop-filter: blur(4px);
-            transition: all 0.3s;
+            animation: badgeGlow 2s infinite alternate;
         }
-        
-        .btn-tiffany {
-            background: linear-gradient(105deg, #5BBFB5, #3A9E94);
+
+        @keyframes badgeGlow {
+            0% { box-shadow: 0 0 5px rgba(90, 190, 175, 0.3); border-color: rgba(90, 190, 175, 0.3); }
+            100% { box-shadow: 0 0 20px rgba(90, 190, 175, 0.6); border-color: rgba(90, 190, 175, 0.8); }
+        }
+
+        /* Bottone spettacolare */
+        .btn-wow {
+            background: linear-gradient(115deg, #5BBFB5, #3A9E94, #2C7A6E);
+            background-size: 200% auto;
             border: none;
-            padding: 14px 38px;
-            font-size: 1.2rem;
+            padding: 16px 48px;
+            font-size: 1.3rem;
             font-weight: 700;
-            border-radius: 60px;
+            border-radius: 80px;
             color: white;
-            box-shadow: 0 6px 0 #2B7A6E;
+            box-shadow: 0 8px 0 #1A5A4F, 0 0 20px rgba(90, 190, 175, 0.5);
             transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            letter-spacing: -0.2px;
+            letter-spacing: 1px;
             position: relative;
             overflow: hidden;
         }
-        
-        .btn-tiffany::before {
+
+        .btn-wow::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s ease;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
-        
-        .btn-tiffany:hover::before {
-            left: 100%;
+
+        .btn-wow:active::before {
+            width: 300px;
+            height: 300px;
         }
-        
-        .btn-tiffany:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 9px 0 #2B7A6E;
-            background: linear-gradient(105deg, #6DCDC2, #4CB0A4);
+
+        .btn-wow:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 0 #1A5A4F, 0 0 35px rgba(90, 190, 175, 0.8);
+            background-position: right center;
         }
-        
-        .btn-tiffany:active {
-            transform: translateY(3px);
-            box-shadow: 0 4px 0 #2B7A6E;
+
+        .btn-wow:active {
+            transform: translateY(4px);
+            box-shadow: 0 5px 0 #1A5A4F;
         }
-        
-        .btn-outline-tiffany {
-            background: transparent;
-            border: 2px solid var(--tiffany);
-            color: #2C7A6E;
-            font-weight: 700;
-            padding: 10px 24px;
-            border-radius: 60px;
-            transition: all 0.2s;
-        }
-        
-        .btn-outline-tiffany:hover {
-            background: var(--tiffany);
-            color: white;
-            transform: scale(0.98);
-        }
-        
-        /* Animazioni per i modali */
+
+        /* Overlay + Card Sorpresa con effetto vetro premium */
         .sorpresa-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(55, 65, 60, 0.7);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(15px);
             z-index: 1040;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.35s ease, visibility 0s linear 0.35s;
+            transition: all 0.4s ease;
         }
-        
+
         .sorpresa-overlay.active {
             opacity: 1;
             visibility: visible;
-            transition: opacity 0.35s ease, visibility 0s linear 0s;
         }
-        
-        /* Step 1 Card - animazione bounce + slide */
+
         .message-card {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0.92);
-            width: 86%;
-            max-width: 440px;
-            background: white;
-            border-radius: 64px;
-            padding: 2.2rem 1.8rem;
+            transform: translate(-50%, -50%) scale(0.9) rotateX(-15deg);
+            width: 90%;
+            max-width: 480px;
+            background: linear-gradient(135deg, rgba(25, 35, 55, 0.95), rgba(15, 25, 45, 0.98));
+            backdrop-filter: blur(20px);
+            border-radius: 72px;
+            padding: 2.5rem 2rem;
             text-align: center;
             z-index: 1050;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
-            box-shadow: 0 35px 55px rgba(0,0,0,0.25);
-            border: 1px solid rgba(129, 216, 208, 0.6);
+            transition: all 0.5s cubic-bezier(0.34, 1.3, 0.64, 1);
+            border: 1px solid rgba(90, 190, 175, 0.5);
+            box-shadow: 0 40px 70px rgba(0, 0, 0, 0.5), 0 0 30px rgba(90, 190, 175, 0.3);
         }
-        
+
         .message-card.active {
             opacity: 1;
             visibility: visible;
-            transform: translate(-50%, -50%) scale(1);
-            animation: cardPop 0.5s ease-out;
+            transform: translate(-50%, -50%) scale(1) rotateX(0deg);
         }
-        
-        @keyframes cardPop {
-            0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0; }
-            70% { transform: translate(-50%, -50%) scale(1.02); }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+
+        .message-icon {
+            font-size: 4rem;
+            animation: iconBounce 0.8s ease infinite alternate;
         }
-        
+
+        @keyframes iconBounce {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-12px); }
+        }
+
         .message-text {
-            font-size: 1.9rem;
+            font-size: 2rem;
             font-weight: 800;
-            color: #1F5E55;
+            background: linear-gradient(135deg, #81D8D0, #CFF2EE);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
             line-height: 1.3;
-            margin: 1rem 0 0.5rem;
         }
-        
-        .highlight-date {
-            color: #3A9E94;
-            background: linear-gradient(120deg, #CFF2EE, #E0F7F2);
-            display: inline-block;
-            padding: 0.1rem 0.6rem;
-            border-radius: 50px;
-        }
-        
-        /* Step 2: biglietto fluttuante con animazione slideUp e rotazione morbida */
+
+        /* Biglietto fluttuante con effetto 3D e luce */
         .ticket-wrapper {
             position: fixed;
             top: 0;
@@ -255,172 +243,126 @@
             visibility: hidden;
             pointer-events: none;
         }
-        
+
         .ticket-wrapper.active {
             visibility: visible;
             pointer-events: auto;
         }
-        
+
         .floating-ticket {
-            max-width: 360px;
+            max-width: 380px;
             width: 88%;
             background: transparent;
-            animation: ticketFloatIn 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.2) forwards;
+            animation: ticket3DIn 0.7s cubic-bezier(0.34, 1.3, 0.64, 1) forwards;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.3s, filter 0.3s;
         }
-        
+
         .floating-ticket:hover {
-            transform: scale(1.02) rotate(1deg);
+            transform: scale(1.03) rotate(1deg);
+            filter: drop-shadow(0 0 25px rgba(90, 190, 175, 0.6));
         }
-        
-        @keyframes ticketFloatIn {
+
+        @keyframes ticket3DIn {
             0% {
                 opacity: 0;
-                transform: scale(0.7) translateY(60px) rotate(-5deg);
+                transform: scale(0.5) translateY(100px) rotate(-8deg);
             }
-            60% {
+            50% {
                 opacity: 1;
-                transform: scale(1.03) translateY(-8px) rotate(1deg);
+                transform: scale(1.05) translateY(-10px) rotate(2deg);
             }
             100% {
                 opacity: 1;
                 transform: scale(1) translateY(0) rotate(0deg);
             }
         }
-        
+
         .ticket-img {
             width: 100%;
             height: auto;
-            border-radius: 36px;
-            box-shadow: 0 30px 45px rgba(58, 158, 148, 0.35), 0 0 0 5px white, 0 0 0 12px rgba(129, 216, 208, 0.6);
+            border-radius: 40px;
+            box-shadow: 0 35px 55px rgba(0, 0, 0, 0.5), 0 0 0 6px rgba(90, 190, 175, 0.5), 0 0 0 12px rgba(255, 255, 255, 0.1);
             background: #FFF9F0;
             display: block;
             transition: all 0.3s;
         }
-        
-        .close-hint-ticket {
-            margin-top: 20px;
-            font-size: 0.85rem;
-            background: rgba(58, 158, 148, 0.85);
-            backdrop-filter: blur(12px);
-            display: inline-block;
-            padding: 8px 20px;
-            border-radius: 60px;
-            font-weight: 600;
-            color: white;
-            letter-spacing: -0.2px;
-            animation: pulseHint 1.5s infinite;
-        }
-        
-        @keyframes pulseHint {
-            0% { opacity: 0.7; transform: scale(0.98);}
-            100% { opacity: 1; transform: scale(1.02);}
-        }
-        
-        /* Animazioni aggiuntive per il bottone principale */
-        .btn-icon-pulse {
-            animation: iconWave 1.2s infinite alternate;
-            display: inline-block;
-        }
-        
-        @keyframes iconWave {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-3px); }
-        }
-        
-        .footer-tiffany {
-            color: #489E92;
-            background: rgba(207, 242, 238, 0.6);
+
+        /* Footer elegante */
+        .footer-elegant {
+            background: rgba(90, 190, 175, 0.15);
             border-radius: 100px;
-            padding: 0.5rem 1rem;
-            font-weight: 500;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.85rem;
+            color: #81D8D0;
+            backdrop-filter: blur(4px);
         }
-        
+
         @media (max-width: 550px) {
-            .main-title { font-size: 2.3rem; }
+            .main-title { font-size: 2.5rem; }
             .message-text { font-size: 1.5rem; }
-            .btn-tiffany { font-size: 1rem; padding: 12px 28px; }
-            .hero-card { padding: 1.2rem; }
-        }
-        
-        /* aggiunta glow subtle */
-        .glow-tiffany {
-            animation: softGlow 3s infinite alternate;
-        }
-        
-        @keyframes softGlow {
-            0% { box-shadow: 0 0 5px rgba(90, 190, 175, 0.3); }
-            100% { box-shadow: 0 0 20px rgba(90, 190, 175, 0.5); }
+            .btn-wow { font-size: 1.1rem; padding: 12px 32px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- particelle kawaii minimal -->
-    <div class="floating-particles">
-        <div class="particle">🌸</div>
-        <div class="particle">✨</div>
-        <div class="particle">🎵</div>
-        <div class="particle">🎤</div>
-        <div class="particle">💚</div>
-        <div class="particle">🍃</div>
-        <div class="particle">🌿</div>
-        <div class="particle">⭐</div>
-    </div>
+    <!-- Canvas stelle dinamiche -->
+    <canvas id="stars-canvas"></canvas>
+    
+    <!-- Glow orb decorativi -->
+    <div class="glow-orb orb1"></div>
+    <div class="glow-orb orb2"></div>
 
     <div class="container min-vh-100 d-flex align-items-center justify-content-center position-relative" style="z-index: 10;">
         <div class="row justify-content-center w-100">
             <div class="col-12 col-md-8 col-lg-7">
                 <div class="hero-card text-center">
                     <div class="mb-3">
-                        <span class="birthday-badge"><i class="fas fa-gem me-2"></i> 5 Giugno <i class="fas fa-heart ms-2" style="color:#5BBFB5;"></i></span>
+                        <span class="birthday-badge">
+                            <i class="fas fa-star"></i> 5 Giugno <i class="fas fa-gem"></i>
+                        </span>
                     </div>
-                    <h1 class="main-title">BUON COMPLEANNO<br>JOANI!</h1>
+                    <h1 class="main-title">BUON COMPLEANNO<br>JOANI! 🎂✨</h1>
                     <div class="my-3">
-                         <!-- <p class="text-secondary-emphasis fs-5" style="color:#386A62;">🎂 commented Un nuovo giro, magia e musica 🎶</p> -->
                     </div>
                     <div class="mt-4">
-                        <button id="scopriBtn" class="btn btn-tiffany">
-                            <i class="fas fa-star-of-life me-2 btn-icon-pulse"></i> Scopri la sorpresa <i class="fas fa-arrow-right ms-2"></i>
+                        <button id="scopriBtn" class="btn btn-wow">
+                            <i class="fas fa-gift me-2"></i> SCOPRI LA SORPRESA <i class="fas fa-magic ms-2"></i>
                         </button>
                     </div>
-                    <div class="footer-tiffany mt-4 d-inline-flex gap-2">
-                      <!--   <i class="fas fa-ticket-alt"></i> 4 Luglio · commented Serata da ricordare -->
+                    <div class="footer-elegant mt-4 d-inline-flex gap-3">
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Overlay generale -->
+    <!-- Overlay -->
     <div id="globalOverlay" class="sorpresa-overlay"></div>
 
-    <!-- STEP 1: messaggio "Tieniti libera il 4 luglio sera" -->
+    <!-- Step 1: Messaggio -->
     <div id="stepOneCard" class="message-card">
-        <div class="mb-2">
-            <i class="fas fa-calendar-check" style="font-size: 3.2rem; color: #5BBFB5;"></i>
+        <div class="message-icon">
+            <i class="fas fa-calendar-check"></i>
         </div>
-        <div class="message-text">
-            Tieniti libera<br>il <span class="highlight-date">4 Luglio sera</span>! 🎤
+        <div class="message-text mt-3">
+            Tieniti libera<br>il 4 Luglio sera! 🎤
         </div>
-        <div class="sub-message mt-2" style="color: #4F7E74; font-weight: 500;">
-            Ho un piano che ti farà cantare a squarciagola...
-        </div>
-        <button id="proseguiBtn" class="btn btn-tiffany w-100 mt-4" style="background: #3A9E94; font-size: 1.15rem;">
-            Prosegui <i class="fas fa-arrow-right ms-1"></i>
+        <p class="mt-3" style="color: #A8D8D0; font-weight: 500;">🎶 Un'esperienza che ti farà saltellare e cantare a squarciagola... 🎶</p>
+        <button id="proseguiBtn" class="btn btn-wow w-100 mt-4" style="font-size: 1.1rem; padding: 12px;">
+            Prosegui <i class="fas fa-arrow-right ms-2"></i>
         </button>
-        <button id="closeStepOneBtn" class="btn btn-outline-tiffany w-100 mt-3">
+        <button id="closeStepOneBtn" class="btn btn-outline-light w-100 mt-3" style="border-radius: 60px; background: transparent; border-color: rgba(90,190,175,0.5); color: #81D8D0;">
             Chiudi
         </button>
     </div>
 
-    <!-- STEP 2: biglietto fluttuante (immagine ticket originale) -->
+    <!-- Step 2: Biglietto -->
     <div id="ticketWrapper" class="ticket-wrapper">
         <div class="floating-ticket text-center" id="floatingTicketContainer">
-            <!-- L'immagine originale del biglietto TicketOne -->
-            <img id="bigliettoImg" class="ticket-img" src="WhatsApp Image 2026-06-04 at 15.43.22.jpeg" alt="Biglietto Concerto Gemitaiz - TicketOne" style="background: #FFF9F0;">
-            <div class="close-hint-ticket mt-2">
+            <img id="bigliettoImg" class="ticket-img" src="WhatsApp Image 2026-06-04 at 15.43.22.jpeg" alt="Biglietto Concerto Gemitaiz" style="background: #FFF9F0;">
+            <div class="mt-3" style="color: #81D8D0; font-size: 0.85rem; background: rgba(0,0,0,0.5); display: inline-block; padding: 6px 18px; border-radius: 60px; backdrop-filter: blur(8px);">
                 <i class="fas fa-hand-peace me-1"></i> Tocca il biglietto per chiudere
             </div>
         </div>
@@ -429,6 +371,84 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         (function() {
+            // STELLE DINAMICHE (Canvas)
+            const canvas = document.getElementById('stars-canvas');
+            const ctx = canvas.getContext('2d');
+            let stars = [];
+            
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                initStars();
+            }
+            
+            function initStars() {
+                stars = [];
+                const starCount = Math.floor(window.innerWidth * window.innerHeight / 2500);
+                for (let i = 0; i < starCount; i++) {
+                    stars.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        radius: Math.random() * 2.5,
+                        alpha: Math.random() * 0.6 + 0.2,
+                        speed: 0.02 + Math.random() * 0.03,
+                        phase: Math.random() * Math.PI * 2
+                    });
+                }
+            }
+            
+            function drawStars() {
+                if (!ctx) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let star of stars) {
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 240, 210, ${star.alpha + Math.sin(Date.now() * star.speed + star.phase) * 0.2})`;
+                    ctx.fill();
+                }
+                requestAnimationFrame(drawStars);
+            }
+            
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+            });
+            resizeCanvas();
+            drawStars();
+            
+            // CONFETTI AL CLICK DEL BOTTONE PRINCIPALE
+            function shootConfetti() {
+                canvasConfetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#81D8D0', '#5BBFB5', '#CFF2EE', '#FFD966'] });
+                setTimeout(() => {
+                    canvasConfetti({ particleCount: 80, spread: 120, origin: { y: 0.5, x: 0.2 }, startVelocity: 20 });
+                    canvasConfetti({ particleCount: 80, spread: 120, origin: { y: 0.5, x: 0.8 }, startVelocity: 20 });
+                }, 150);
+            }
+            
+            function createSparklesBurst(x, y) {
+                for (let i = 0; i < 35; i++) {
+                    const spark = document.createElement('div');
+                    const icons = ['✨', '⭐', '🎵', '💚', '🎤', '🌟', '💎'];
+                    spark.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+                    spark.style.position = 'fixed';
+                    spark.style.left = x + (Math.random() - 0.5) * 100 + 'px';
+                    spark.style.top = y + (Math.random() - 0.5) * 80 + 'px';
+                    spark.style.fontSize = (16 + Math.random() * 22) + 'px';
+                    spark.style.pointerEvents = 'none';
+                    spark.style.zIndex = '2000';
+                    spark.style.opacity = '1';
+                    spark.style.transition = 'all 1s ease-out';
+                    document.body.appendChild(spark);
+                    
+                    const moveX = (Math.random() - 0.5) * 150;
+                    const moveY = -100 - Math.random() * 120;
+                    spark.animate([
+                        { transform: 'translate(0, 0) rotate(0deg)', opacity: 1 },
+                        { transform: `translate(${moveX}px, ${moveY}px) rotate(45deg)`, opacity: 0 }
+                    ], { duration: 1000, easing: 'cubic-bezier(0.2, 0.8, 0.4, 1)', fill: 'forwards' });
+                    setTimeout(() => spark.remove(), 1050);
+                }
+            }
+            
             // Elementi DOM
             const scopriBtn = document.getElementById('scopriBtn');
             const globalOverlay = document.getElementById('globalOverlay');
@@ -436,201 +456,110 @@
             const proseguiBtn = document.getElementById('proseguiBtn');
             const closeStepOneBtn = document.getElementById('closeStepOneBtn');
             const ticketWrapper = document.getElementById('ticketWrapper');
-            const floatingTicketContainer = document.getElementById('floatingTicketContainer');
-
-            // Helper animazione extra: effetto scintille al click del bottone
-            function createSparks(x, y) {
-                const colors = ['#81D8D0', '#5BBFB5', '#CFF2EE', '#FFD966'];
-                for (let i = 0; i < 14; i++) {
-                    const spark = document.createElement('div');
-                    spark.innerHTML = ['✨', '⭐', '🎵', '💚', '🍃'][Math.floor(Math.random() * 5)];
-                    spark.style.position = 'fixed';
-                    spark.style.left = x + (Math.random() - 0.5) * 70 + 'px';
-                    spark.style.top = y + (Math.random() - 0.5) * 50 + 'px';
-                    spark.style.fontSize = (18 + Math.random() * 12) + 'px';
-                    spark.style.pointerEvents = 'none';
-                    spark.style.zIndex = '2000';
-                    spark.style.opacity = '0.9';
-                    spark.style.transition = 'all 0.8s ease-out';
-                    document.body.appendChild(spark);
-                    
-                    const moveX = (Math.random() - 0.5) * 120;
-                    const moveY = -70 - Math.random() * 80;
-                    spark.animate([
-                        { transform: 'translate(0, 0) rotate(0deg)', opacity: 1 },
-                        { transform: `translate(${moveX}px, ${moveY}px) rotate(30deg)`, opacity: 0 }
-                    ], {
-                        duration: 900,
-                        easing: 'cubic-bezier(0.2, 0.8, 0.4, 1)',
-                        fill: 'forwards'
-                    });
-                    setTimeout(() => spark.remove(), 950);
-                }
-            }
-
-            // Mostra step 1 con animazione + scintille
+            const floatingTicket = document.getElementById('floatingTicketContainer');
+            
             function showStepOne() {
                 if (ticketWrapper.classList.contains('active')) hideTicket();
                 globalOverlay.classList.add('active');
                 stepOneCard.classList.add('active');
-                // Aggiungi micro animazione al messaggio
-                const msgIcon = stepOneCard.querySelector('.fa-calendar-check');
-                if (msgIcon) {
-                    msgIcon.style.animation = 'none';
-                    msgIcon.offsetHeight;
-                    msgIcon.style.animation = 'iconWave 0.5s ease';
-                    setTimeout(() => { if(msgIcon) msgIcon.style.animation = ''; }, 500);
-                }
+                shootConfetti();
+                const rect = scopriBtn.getBoundingClientRect();
+                createSparklesBurst(rect.left + rect.width/2, rect.top + rect.height/2);
             }
-
+            
             function hideStepOne() {
                 globalOverlay.classList.remove('active');
                 stepOneCard.classList.remove('active');
             }
-
+            
             function showTicket() {
-                hideStepOne(); // chiudi eventuale messaggio
+                hideStepOne();
                 ticketWrapper.classList.add('active');
+                // Effetto pioggia di stelle
+                canvasConfetti({ particleCount: 200, spread: 100, origin: { y: 0.7 }, startVelocity: 15, colors: ['#81D8D0', '#5BBFB5', '#FFD966'] });
+                
                 const imgElem = document.getElementById('bigliettoImg');
                 if (imgElem) {
-                    // Gestione fallback se l'immagine non viene caricata (mantiene esperienza pulita)
                     imgElem.onerror = function() {
-                        // Creazione biglietto alternativo realistico con stile Tiffany
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        canvas.width = 700;
-                        canvas.height = 520;
-                        ctx.fillStyle = '#FFFCF5';
-                        ctx.fillRect(0, 0, canvas.width, canvas.height);
-                        // intestazione ticketone
-                        ctx.fillStyle = '#3A9E94';
-                        ctx.fillRect(0, 0, canvas.width, 55);
-                        ctx.fillStyle = 'white';
-                        ctx.font = 'bold 28px "Plus Jakarta Sans", "Segoe UI"';
-                        ctx.fillText('ticketone', 28, 45);
-                        ctx.font = 'bold 18px "Plus Jakarta Sans"';
-                        ctx.fillStyle = '#2B6B61';
-                        ctx.fillText('DATI ORDINE', 28, 105);
-                        ctx.font = '600 16px "Plus Jakarta Sans"';
-                        ctx.fillStyle = '#1A4F47';
-                        ctx.fillText('Mariel Abrigo', 28, 140);
-                        ctx.fillText('Gutierrez Joana Marie', 28, 170);
-                        ctx.font = '500 14px monospace';
-                        ctx.fillStyle = '#3E6B62';
-                        ctx.fillText('Ippodromo del Visarno · Firenze', 28, 215);
-                        ctx.font = 'bold 19px "Plus Jakarta Sans"';
-                        ctx.fillStyle = '#D45A2B';
-                        ctx.fillText('4 Luglio 2026 Ore 21:00', 28, 265);
-                        ctx.fillStyle = '#2C7A6E';
-                        ctx.font = 'bold 15px "Plus Jakarta Sans"';
-                        ctx.fillText('PIT - ROSA · TITOLO DIGITALE', 28, 310);
-                        ctx.fillStyle = '#5A706A';
-                        ctx.font = '13px sans-serif';
-                        ctx.fillText('Gemitaiz · Concerto · Ingresso Viale del Visarno', 28, 355);
-                        // codice a barre decorativo
+                        // Biglietto alternativo realistico
+                        const canvasAlt = document.createElement('canvas');
+                        const ctxAlt = canvasAlt.getContext('2d');
+                        canvasAlt.width = 700;
+                        canvasAlt.height = 520;
+                        ctxAlt.fillStyle = '#FFFCF5';
+                        ctxAlt.fillRect(0, 0, canvasAlt.width, canvasAlt.height);
+                        ctxAlt.fillStyle = '#3A9E94';
+                        ctxAlt.fillRect(0, 0, canvasAlt.width, 55);
+                        ctxAlt.fillStyle = 'white';
+                        ctxAlt.font = 'bold 28px "Poppins", sans-serif';
+                        ctxAlt.fillText('ticketone', 28, 45);
+                        ctxAlt.font = 'bold 18px "Poppins"';
+                        ctxAlt.fillStyle = '#2B6B61';
+                        ctxAlt.fillText('DATI ORDINE', 28, 105);
+                        ctxAlt.font = '600 16px "Poppins"';
+                        ctxAlt.fillStyle = '#1A4F47';
+                        ctxAlt.fillText('Mariel Abrigo', 28, 140);
+                        ctxAlt.fillText('Gutierrez Joana Marie', 28, 170);
+                        ctxAlt.fillText('Ippodromo del Visarno · Firenze', 28, 215);
+                        ctxAlt.font = 'bold 19px "Poppins"';
+                        ctxAlt.fillStyle = '#D45A2B';
+                        ctxAlt.fillText('4 Luglio 2026 Ore 21:00', 28, 265);
+                        ctxAlt.fillStyle = '#2C7A6E';
+                        ctxAlt.fillText('PIT - ROSA · TITOLO DIGITALE', 28, 310);
+                        ctxAlt.fillStyle = '#5A706A';
+                        ctxAlt.font = '13px sans-serif';
+                        ctxAlt.fillText('Gemitaiz · Concerto', 28, 355);
                         for (let i = 0; i < 32; i++) {
-                            ctx.fillStyle = '#3A9E94';
-                            ctx.fillRect(55 + i * 12, 390, 7, 34);
+                            ctxAlt.fillStyle = '#3A9E94';
+                            ctxAlt.fillRect(55 + i * 12, 390, 7, 34);
                         }
-                        ctx.fillStyle = '#3A9E94';
-                        ctx.font = 'bold 14px monospace';
-                        ctx.fillText('BUON DIVERTIMENTO!', canvas.width - 190, 480);
-                        ctx.fillStyle = '#5BBFB5';
-                        ctx.font = 'italic 12px sans-serif';
-                        ctx.fillText('✧ Biglietto digitale valido per un ingresso ✧', 30, 490);
-                        const dataUrl = canvas.toDataURL('image/png');
+                        ctxAlt.fillStyle = '#3A9E94';
+                        ctxAlt.font = 'bold 14px monospace';
+                        ctxAlt.fillText('BUON DIVERTIMENTO!', canvasAlt.width - 190, 480);
+                        const dataUrl = canvasAlt.toDataURL('image/png');
                         imgElem.src = dataUrl;
-                        imgElem.alt = "Biglietto digitale concerto Gemitaiz Tiffany";
                     };
-                    if (imgElem.complete && imgElem.naturalWidth === 0) {
-                        imgElem.onerror();
-                    }
-                }
-                // Aggiungi effetto di ingresso con leggera vibrazione
-                const ticketDiv = document.querySelector('.floating-ticket');
-                if (ticketDiv) {
-                    ticketDiv.style.animation = 'none';
-                    ticketDiv.offsetHeight;
-                    ticketDiv.style.animation = 'ticketFloatIn 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.2) forwards';
+                    if (imgElem.complete && imgElem.naturalWidth === 0) imgElem.onerror();
                 }
             }
-
+            
             function hideTicket() {
                 ticketWrapper.classList.remove('active');
                 if (globalOverlay.classList.contains('active')) globalOverlay.classList.remove('active');
             }
-
-            // Evento bottone "Scopri la sorpresa" con scintille e apertura step1
+            
+            // Eventi
             if (scopriBtn) {
                 scopriBtn.addEventListener('click', (e) => {
                     e.preventDefault();
                     const rect = scopriBtn.getBoundingClientRect();
-                    const centerX = rect.left + rect.width / 2;
-                    const centerY = rect.top + rect.height / 2;
-                    createSparks(centerX, centerY);
-                    // Aggiungi effetto di rinforzo visivo
-                    scopriBtn.style.transform = 'scale(0.97)';
-                    setTimeout(() => { if(scopriBtn) scopriBtn.style.transform = ''; }, 120);
+                    createSparklesBurst(rect.left + rect.width/2, rect.top + rect.height/2);
                     showStepOne();
                 });
             }
-
-            // Prosegui: chiudi step1 e apri biglietto
+            
             if (proseguiBtn) {
                 proseguiBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    // scintille di conferma
-                    const rectPro = proseguiBtn.getBoundingClientRect();
-                    createSparks(rectPro.left + rectPro.width/2, rectPro.top + rectPro.height/2);
+                    const rect = proseguiBtn.getBoundingClientRect();
+                    createSparklesBurst(rect.left + rect.width/2, rect.top + rect.height/2);
                     showTicket();
                 });
             }
-
-            // Chiudi step1
-            if (closeStepOneBtn) {
-                closeStepOneBtn.addEventListener('click', () => {
-                    hideStepOne();
-                });
-            }
-
-            // Chiudi biglietto cliccando sul floating container o immagine
-            if (floatingTicketContainer) {
-                floatingTicketContainer.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    hideTicket();
-                });
-            }
-
-            // Chiudi modale con overlay background
-            if (globalOverlay) {
-                globalOverlay.addEventListener('click', () => {
-                    if (stepOneCard.classList.contains('active')) {
-                        hideStepOne();
-                    } else if (ticketWrapper.classList.contains('active')) {
-                        hideTicket();
-                    }
-                });
-            }
-
-            // Chiusura con tasto ESC
+            
+            if (closeStepOneBtn) closeStepOneBtn.addEventListener('click', () => hideStepOne());
+            if (floatingTicket) floatingTicket.addEventListener('click', (e) => { e.stopPropagation(); hideTicket(); });
+            if (globalOverlay) globalOverlay.addEventListener('click', () => {
+                if (stepOneCard.classList.contains('active')) hideStepOne();
+                else if (ticketWrapper.classList.contains('active')) hideTicket();
+            });
+            
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     if (stepOneCard.classList.contains('active')) hideStepOne();
                     if (ticketWrapper.classList.contains('active')) hideTicket();
                 }
             });
-
-            // Pre-carica immagine per evitare ritardi visibili
-            const preloadImg = new Image();
-            preloadImg.src = "WhatsApp%20Image%202026-06-04%20at%2015.43.22.jpeg";
-            
-            // Micro animazione iniziale sul titolo
-            const title = document.querySelector('.main-title');
-            if (title) {
-                title.style.animation = 'none';
-                title.offsetHeight;
-                title.style.animation = 'titleGlow 2s ease-in-out infinite alternate';
-            }
         })();
     </script>
 </body>
